@@ -1,27 +1,12 @@
-const state = {
-    user: {},
-};
-
-const getters = {
-    getUser: (state) => state.user,
-};
-
-const mutations = {
-    setUser: (state, payload) => {
-        state.user = payload;
-    },
-};
-
+import api from "~/config/libs/axios";
 const actions = {
-    getUser: ({ commit }, payload) => {
-        commit("setUser", payload);
+    getDashboardContent: async (cx, { action }) => {
+        let { data } = await api.post(`/admin/dashboard/get-data/${action}`);
+        return data;
     },
 };
 
 export default {
     namespaced: true,
-    state,
-    getters,
-    mutations,
     actions,
 };

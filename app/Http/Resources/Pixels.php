@@ -78,8 +78,7 @@ class Pixels extends Resource
     {
         $columns = [];
         $columns['code'] = ['label' => 'Código', 'sortable_index' => 'id'];
-        $columns['name'] = ['label' => 'Nome'];
-        $columns['value'] = ['label' => 'Valor'];
+        $columns['label'] = ['label' => 'Nome', 'sortable' => 'name'];
         $columns['f_created_at_badge'] = ['label' => 'Data de Criação', 'sortable_index' => "created_at"];
         $columns['f_updated_at_badge'] = ['label' => 'Data de Atualização', 'sortable_index' => "updated_at"];
         return $columns;

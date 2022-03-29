@@ -49,9 +49,9 @@ function getMenuClass($permission, $array_current = [])
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item {{ currentClass(['/admin']) }}">
-                <a class="nav-link" href="/admin">
+                <a class="nav-link pr-3" href="/admin">
                     <i class="el-icon-data-line mr-2"></i>
-                    Dashboard
+                    Painel
                     <span class="sr-only">(current)</span>
                 </a>
             </li>

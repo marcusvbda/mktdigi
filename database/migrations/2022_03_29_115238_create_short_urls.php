@@ -15,7 +15,7 @@ class CreateShortUrls extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('original_url');
-            $table->datetime('due_date');
+            $table->string('due_date')->nullable();
             $table->integer('clicks')->default(0);
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
@@ -37,6 +37,20 @@ class CreateShortUrls extends Migration
             $table->foreign('pixel_id')
                 ->references('id')
                 ->on('pixels');
+        });
+
+        Schema::create('short_urls_clicks', function (Blueprint $table) {
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id');
+            $table->jsonb('data')->nullable();
+            $table->unsignedBigInteger('short_url_id');
+            $table->foreign('short_url_id')
+                ->references('id')
+                ->on('short_urls');
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 

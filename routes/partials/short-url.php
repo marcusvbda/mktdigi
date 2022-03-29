@@ -2,4 +2,6 @@
 
 use App\Http\Controllers\ShortUrlController;
 
-Route::get('{code}', [ShortUrlController::class, 'redirectTo']);
+Route::group(['prefix' => "short"], function () {
+    Route::get('{code}', [ShortUrlController::class, 'redirectTo']);
+});

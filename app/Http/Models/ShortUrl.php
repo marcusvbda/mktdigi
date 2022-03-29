@@ -15,7 +15,6 @@ class ShortUrl extends DefaultModel
     protected $table = 'short_urls';
 
     public $appends = ['code'];
-    public $casts = ['due_date' => 'datetime'];
 
     public static function boot()
     {
@@ -35,9 +34,14 @@ class ShortUrl extends DefaultModel
         return $this->belongsTo(User::class);
     }
 
+    public function getUrlBadgeAttribute()
+    {
+        return "<copy-text value='" . $this->short_url . "'></copy-text>";
+    }
+
     public function getLabelAttribute()
     {
-        return Vstack::makeLinesHtmlAppend($this->name, $this->short_url);
+        return Vstack::makeLinesHtmlAppend($this->name, $this->original_url);
     }
 
     public function pixels()
@@ -48,12 +52,16 @@ class ShortUrl extends DefaultModel
     public function getShortUrlAttribute()
     {
         $url = config("app.url");
-        return $url . "/" . $this->code;
+        return $url . "/short/" . $this->code;
     }
 
-    public function isDateExpiredAttribute()
+    public function getIsDateExpiredAttribute()
     {
-        return Carbon::now()->gt($this->due_date);
+        if (!$this->due_date) {
+            return false;
+        }
+        $due_date = Carbon::parse($this->due_date);
+        return Carbon::now()->gt($due_date);
     }
 
     public function canShow()
@@ -64,8 +72,23 @@ class ShortUrl extends DefaultModel
         return true;
     }
 
-    public function dispatchPixelEvents()
+    public function getFDueDateAttribute()
     {
-        return true;
+        if (!$this->due_date) {
+            return null;
+        }
+        return Carbon::parse($this->due_date)->format('d/m/Y');
+    }
+
+    public function clicks()
+    {
+        return $this->hasMany(ShortUrlClick::class, 'short_url_id');
+    }
+
+    public function incrementClick()
+    {
+        $this->clicks()->create([
+            "data" => []
+        ]);
     }
 }

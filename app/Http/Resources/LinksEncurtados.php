@@ -10,8 +10,7 @@ use Auth;
 use marcusvbda\vstack\Fields\{
     BelongsTo,
     Card,
-    Text,
-    DateTime
+    Text
 };
 use App\Http\Models\ShortUrl;
 use marcusvbda\vstack\Services\Messages;
@@ -81,6 +80,9 @@ class LinksEncurtados extends Resource
         $columns = [];
         $columns['code'] = ['label' => 'Código', 'sortable_index' => 'id'];
         $columns['label'] = ['label' => 'Nome', 'sortable' => 'name'];
+        $columns['url_badge'] = ['label' => 'Url Curta', 'sortable' => false];
+        $columns['clicks'] = ['label' => 'Cliques'];
+        $columns['f_due_date'] = ['label' => 'Vencimento', 'sortable_index' => "due_date"];
         $columns['f_created_at_badge'] = ['label' => 'Data de Criação', 'sortable_index' => "created_at"];
         $columns['f_updated_at_badge'] = ['label' => 'Data de Atualização', 'sortable_index' => "updated_at"];
         return $columns;
@@ -95,38 +97,48 @@ class LinksEncurtados extends Resource
             })->toArray();
         }
 
-        return [
-            new Card('Identificação', [
-                new Text([
-                    'label' => 'Nome',
-                    'field' => 'name',
-                    'description' => 'Apenas para identificação',
-                    'rules' => ['required']
-                ]),
-                new Text([
-                    'label' => 'Url',
-                    'field' => 'original_url',
-                    'type' => 'url',
-                    'description' => 'Link original',
-                    'rules' => ['required']
-                ]),
-            ]),
-            new Card('Configurações', [
-                new BelongsTo([
-                    'label' => 'Pixels',
-                    'field' => 'pixel_ids',
-                    'multiple' => true,
-                    'options' => Pixel::select("id as id", "name as value")->get(),
-                    'default' => $default_ids,
-                ]),
-                new DateTime([
-                    'label' => 'Vencimento',
-                    'field' => 'due_date',
-                    'type' => 'date',
-                    'description' => 'Caso o link não possua vencimento deixe este campo em branco',
-                ])
-            ])
-        ];
+        $fields[] =  new Text([
+            'label' => 'Nome',
+            'field' => 'name',
+            'description' => 'Apenas para identificação',
+            'rules' => ['required']
+        ]);
+
+        $fields[] =  new Text([
+            'label' => 'Url',
+            'field' => 'original_url',
+            'type' => 'url',
+            'description' => 'Link original',
+            'rules' => ['required']
+        ]);
+
+        if (request()->page_type == "edit") {
+            $fields[] =  new Text([
+                'label' => 'Url Encurtada',
+                'disabled' => true,
+                'field' => 'short_url'
+            ]);
+        }
+        $cards[] = new Card("Identificação", $fields);
+
+
+        $fields = [];
+        $fields[] =   new BelongsTo([
+            'label' => 'Pixels',
+            'field' => 'pixel_ids',
+            'multiple' => true,
+            'options' => Pixel::select("id as id", "name as value")->get(),
+            'default' => $default_ids,
+        ]);
+        $fields[] =   new Text([
+            'label' => 'Vencimento',
+            'field' => 'due_date',
+            'type' => 'date',
+            'description' => 'Caso o link não possua vencimento deixe este campo em branco',
+        ]);
+        $cards[] = new Card("Configurações", $fields);
+
+        return $cards;
     }
 
     public function lenses()
@@ -148,13 +160,9 @@ class LinksEncurtados extends Resource
         $filters[] = $this->getPresetDateFilter();
         $filters[] = new FilterByText([
             "label" => "Nome",
-            "column" => "name"
+            "column" => "name",
+            "index" => "name"
         ]);
-        $filters[] = new FilterByText([
-            "label" => "Identificador",
-            "column" => "value"
-        ]);
-
         return $filters;
     }
 

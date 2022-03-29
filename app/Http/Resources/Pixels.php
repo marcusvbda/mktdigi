@@ -134,11 +134,13 @@ class Pixels extends Resource
         $filters[] = $this->getPresetDateFilter();
         $filters[] = new FilterByText([
             "label" => "Nome",
-            "column" => "name"
+            "column" => "name",
+            "index" => "name"
         ]);
         $filters[] = new FilterByText([
             "label" => "Identificador",
-            "column" => "value"
+            "column" => "value",
+            "index" => "value"
         ]);
 
         return $filters;

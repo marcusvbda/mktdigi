@@ -12,9 +12,7 @@ class ShortUrlController extends Controller
         if (!$url->canShow()) {
             abort(404);
         }
-        $url->dispatchPixelEvents();
-        $url->increment('clicks');
-        // dd('passow');
-        return redirect($url->original_url);
+        $url->incrementClick();
+        return view("redirect_page", compact("url"));
     }
 }

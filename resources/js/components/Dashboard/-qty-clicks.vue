@@ -34,7 +34,7 @@ export default {
     methods: {
         ...mapActions("dashboard", ["getDashboardContent"]),
         getData() {
-            this.getDashboardContent({ action: "getPixelQty" }).then((data) => {
+            this.getDashboardContent({ action: "getClickQty" }).then((data) => {
                 this.qty = data;
                 this.loading = false;
             });

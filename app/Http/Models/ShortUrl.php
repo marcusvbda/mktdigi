@@ -35,6 +35,17 @@ class ShortUrl extends DefaultModel
 
     public function getLabelAttribute()
     {
-        return Vstack::makeLinesHtmlAppend($this->name, $this->value);
+        return Vstack::makeLinesHtmlAppend($this->name, $this->short_url);
+    }
+
+    public function pixels()
+    {
+        return $this->belongsToMany(Pixel::class);
+    }
+
+    public function getShortUrlAttribute()
+    {
+        $url = config("app.url");
+        return $url . "/" . $this->code;
     }
 }

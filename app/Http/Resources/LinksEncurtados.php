@@ -88,6 +88,13 @@ class LinksEncurtados extends Resource
 
     public function fields()
     {
+        $default_ids = [];
+        if (request()->page_type == 'edit' && request()->content) {
+            $default_ids = request()->content->pixels()->pluck('id')->map(function ($row) {
+                return strval($row);
+            })->toArray();
+        }
+
         return [
             new Card('Identificação', [
                 new Text([
@@ -109,7 +116,8 @@ class LinksEncurtados extends Resource
                     'label' => 'Pixels',
                     'field' => 'pixel_ids',
                     'multiple' => true,
-                    'options' => Pixel::select("id as id", "name as value")->get()
+                    'options' => Pixel::select("id as id", "name as value")->get(),
+                    'default' => $default_ids,
                 ]),
                 new DateTime([
                     'label' => 'Vencimento',
@@ -158,6 +166,8 @@ class LinksEncurtados extends Resource
         $target->original_url = data_get($data, "data.original_url");
         $target->save();
         $pixels_ids =  data_get($data, "data.pixel_ids", []);
+        $target->pixels()->detach();
+        $target->pixels()->sync($pixels_ids);
         Messages::send("success", "Registro salvo com sucesso !!");
         if (request("clicked_btn") == "save") {
             $route = route('resource.edit', ["resource" => $this->id, "code" => $target->code]);

@@ -24,7 +24,7 @@ class CreateShortUrls extends Migration
             $table->timestamps();
         });
 
-        Schema::create('short_urls_pixels', function (Blueprint $table) {
+        Schema::create('pixel_short_url', function (Blueprint $table) {
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_unicode_ci';
             $table->engine = 'InnoDB';

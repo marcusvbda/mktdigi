@@ -55,7 +55,7 @@ function getMenuClass($permission, $array_current = [])
                     <span class="sr-only">(current)</span>
                 </a>
             </li>
-            <li class="nav-item dropdown {{ currentClass(['/admin/pixels/*']) }}">
+            <li class="nav-item dropdown {{ currentClass(['/admin/pixels/*','admin/links-encurtados/*']) }}">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
                     <i class="el-icon-s-order mr-2"></i>
@@ -64,6 +64,9 @@ function getMenuClass($permission, $array_current = [])
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="{{ getMenuClass('viewlist-pixels', ['/admin/pixels/*']) }}" href="/admin/pixels" data-label="Pixels de rastreamento">
                         Pixels
+                    </a>
+                    <a class="{{ getMenuClass('viewlist-short-urls', ['/admin/links-encurtados/*']) }}" href="/admin/links-encurtados">
+                        Links Encurtados
                     </a>
                 </div>
             </li>

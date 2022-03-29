@@ -8,11 +8,8 @@ use marcusvbda\vstack\Resource;
 use Auth;
 use marcusvbda\vstack\Fields\{
     Card,
-    Tags,
-    Check,
     Text,
     Radio,
-    CustomComponent
 };
 use App\Http\Models\Pixel;
 

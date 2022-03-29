@@ -16,6 +16,10 @@ class CreatePixels extends Migration
             $table->string('name');
             $table->string('provider')->default("facebook");
             $table->string('value');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users');
             $table->softDeletes();
             $table->timestamps();
         });

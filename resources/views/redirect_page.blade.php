@@ -25,8 +25,8 @@
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
         @foreach($url->pixels as $pixel) 
-            fbq('init', '{{ $pixel->id }}');
-            fbq('track', 'PageView');
+            fbq('init', '{{ $pixel->value }}');
+	        fbq('trackSingle','{{ $pixel->value }}','PageView');
         @endforeach
     @endif
     setTimeout(() => {

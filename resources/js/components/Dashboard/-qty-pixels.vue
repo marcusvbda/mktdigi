@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md-6 col-sm-12 dash-card flex-fill">
+    <div class="col-12 dash-card flex-fill">
         <div class="card shadow h-100">
             <div class="container py-3">
                 <div class="d-flex flex-column">
@@ -7,11 +7,11 @@
                     <b class="mb-1" v-else>Pixels</b>
                     <div class="d-flex flex-row align-items-end">
                         <div v-if="loading" class="shimmer" :style="{ height: 45, width: 50 }" />
-                        <div class="number" v-else>{{ qty[0] }}</div>
+                        <div class="number" v-else>{{ qtys[0] }}</div>
                     </div>
                     <div v-if="loading" class="shimmer my-2" :style="{ height: 22.5, width: '40%' }" />
                     <div class="description" v-else>
-                        <span class="text-bold text-success">+{{ qty[1] }}</span> Hoje
+                        <span class="text-bold text-success">+{{ qtys[1] }}</span> Hoje
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@ export default {
         ...mapActions("dashboard", ["getDashboardContent"]),
         getData() {
             this.getDashboardContent({ action: "getPixelQty" }).then((data) => {
-                this.qty = data;
+                this.qtys = data;
                 this.loading = false;
             });
         },

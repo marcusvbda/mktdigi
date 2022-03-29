@@ -32,4 +32,9 @@ class DashboardController extends Controller
 		$todayCount = ((new Pixels)->getPresetDateFilter())->apply($query, 'hoje')->count();
 		return  [ShortUrlClick::count(), $todayCount];
 	}
+
+	protected function getRecentClicks()
+	{
+		return ShortUrlClick::orderBy('created_at', 'desc')->with("short_url")->limit(10)->get();
+	}
 }

@@ -9,12 +9,13 @@ use marcusvbda\vstack\Models\DefaultModel;
 use marcusvbda\vstack\Models\Observers\UserObserver;
 use marcusvbda\vstack\Models\Scopes\UserScope;
 use marcusvbda\vstack\Vstack;
+use Browser;
 
 class ShortUrl extends DefaultModel
 {
     protected $table = 'short_urls';
 
-    public $appends = ['code'];
+    public $appends = ['code', 'short_url', 'f_created_at_badge'];
 
     public static function boot()
     {
@@ -88,7 +89,13 @@ class ShortUrl extends DefaultModel
     public function incrementClick()
     {
         $this->clicks()->create([
-            "data" => []
+            "data" => [
+                "platform_version" => Browser::platformVersion(),
+                "platform_family" => Browser::platformFamily(),
+                "browser_name" => Browser::browserName(),
+                "device_family" => Browser::deviceFamily(),
+                "device_model" => Browser::deviceModel(),
+            ]
         ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\ShortUrl;
+use Browser;
 
 class ShortUrlController extends Controller
 {

@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Filters\FilterByPresetDate;
+use App\Http\Filters\FilterByText;
 use marcusvbda\vstack\Resource;
 use Auth;
 use marcusvbda\vstack\Fields\{
@@ -114,5 +116,34 @@ class Pixels extends Resource
                 ])
             ])
         ];
+    }
+
+    public function lenses()
+    {
+        return [
+            "Facebook" => ["field" => "provider", "value" => 'Facebook', 'handler' => function ($q, $value) {
+                return $q->where("provider", $value);
+            }],
+        ];
+    }
+
+    public function getPresetDateFilter()
+    {
+        return new FilterByPresetDate();
+    }
+
+    public function filters()
+    {
+        $filters[] = $this->getPresetDateFilter();
+        $filters[] = new FilterByText([
+            "label" => "Nome",
+            "column" => "name"
+        ]);
+        $filters[] = new FilterByText([
+            "label" => "Identificador",
+            "column" => "value"
+        ]);
+
+        return $filters;
     }
 }

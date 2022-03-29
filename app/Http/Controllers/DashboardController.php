@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Pixel;
+use App\Http\Resources\Pixels;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -19,6 +20,8 @@ class DashboardController extends Controller
 
 	protected function getPixelQty()
 	{
-		return  Pixel::count();
+		$query = Pixel::where("id", ">", 0);
+		$todayCount = ((new Pixels)->getPresetDateFilter())->apply($query, 'hoje')->count();
+		return  [Pixel::count(), $todayCount];
 	}
 }

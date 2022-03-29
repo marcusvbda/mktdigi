@@ -3,12 +3,16 @@
         <div class="card shadow h-100">
             <div class="container py-3">
                 <div class="d-flex flex-column">
-                    <b class="mb-1">Pixels</b>
+                    <div v-if="loading" class="shimmer my-2" :style="{ height: 24, width: 230 }" />
+                    <b class="mb-1" v-else>Pixels de rastreamento</b>
                     <div class="d-flex flex-row align-items-end">
-                        <div v-if="loading" class="shimmer my-2" :style="{ height: 30, width: 45 }" />
-                        <div class="number" v-else>{{ qty }}</div>
+                        <div v-if="loading" class="shimmer" :style="{ height: 45, width: 50 }" />
+                        <div class="number" v-else>{{ qty[0] }}</div>
                     </div>
-                    <small class="description">Pixels de Rastreamento cadastrados no sistema</small>
+                    <div v-if="loading" class="shimmer my-2" :style="{ height: 22.5, width: 180 }" />
+                    <div class="description" v-else>
+                        <span class="text-bold text-success">+{{ qty[1] }}</span> Hoje
+                    </div>
                 </div>
             </div>
         </div>
@@ -21,7 +25,7 @@ export default {
         return {
             loading: true,
             timeout: null,
-            qty: 0,
+            qtys: [],
         };
     },
     created() {
@@ -44,13 +48,8 @@ export default {
         font-weight: 600;
         font-size: 30px;
     }
-    .trend {
-        margin-bottom: 15px;
-        margin-left: 10px;
-        font-size: 12px;
-    }
     .description {
-        font-size: 11px;
+        font-size: 15px;
         color: gray;
     }
 }

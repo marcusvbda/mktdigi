@@ -58,3 +58,10 @@ if (!function_exists('debug_log')) {
 		\Log::channel('debug')->debug("\{$path} $message", $context);
 	}
 }
+
+if (!function_exists('queryBetweenDates')) {
+	function queryBetweenDates($column, $dates)
+	{
+		return "DATE($column) >= DATE('$dates[0]') and DATE($column) <= DATE('$dates[1]')";
+	}
+}

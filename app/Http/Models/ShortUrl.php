@@ -4,6 +4,7 @@ namespace App\Http\Models;
 
 use App\Http\Models\Scopes\OrderByScope;
 use App\User;
+use Carbon\Carbon;
 use marcusvbda\vstack\Models\DefaultModel;
 use marcusvbda\vstack\Models\Observers\UserObserver;
 use marcusvbda\vstack\Models\Scopes\UserScope;
@@ -14,6 +15,7 @@ class ShortUrl extends DefaultModel
     protected $table = 'short_urls';
 
     public $appends = ['code'];
+    public $casts = ['due_date' => 'datetime'];
 
     public static function boot()
     {
@@ -47,5 +49,23 @@ class ShortUrl extends DefaultModel
     {
         $url = config("app.url");
         return $url . "/" . $this->code;
+    }
+
+    public function isDateExpiredAttribute()
+    {
+        return Carbon::now()->gt($this->due_date);
+    }
+
+    public function canShow()
+    {
+        if ($this->is_date_expired) {
+            return false;
+        }
+        return true;
+    }
+
+    public function dispatchPixelEvents()
+    {
+        return true;
     }
 }
